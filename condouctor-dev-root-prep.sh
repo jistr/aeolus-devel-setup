@@ -1,7 +1,10 @@
 #!/bin/sh
 #
-# Install required libraries, prepare postgres, and add aeolus user for
+# Install required libraries, prepare postgres, set up a user for
 # aeolus development.  This script should be run as root.
+
+# change this to the system user you are going to use for development
+dev_username=test
 
 os=unsupported
 if `grep -qs 'Red Hat Enterprise Linux Server release 6' /etc/redhat-release`; then
@@ -63,9 +66,13 @@ else
   systemctl start postgresql.service
 fi
 
-su - postgres -c "psql -c \"CREATE USER aeolus WITH PASSWORD 'v23zj59an';\""
-su - postgres -c "psql -c \"alter user aeolus CREATEDB;\""
+su - postgres -c "psql -c \"CREATE USER $dev_username WITH PASSWORD 'v23zj59an';\""
+su - postgres -c "psql -c \"alter user $dev_username CREATEDB;\""
 
-# add aeolus user and group if needed
-/usr/sbin/groupadd -g 180 -r aeolus 2>/dev/null
-/usr/sbin/useradd -u 180 -g aeolus -m -d /usr/share/aeolus-conductor aeolus 2>/dev/null
+if [ "$dev_username" == "aeolus" ]; then
+  # add aeolus user and group if needed
+  /usr/sbin/groupadd -g 180 -r aeolus 2>/dev/null
+  /usr/sbin/useradd -u 180 -g aeolus -m -d /usr/share/aeolus-conductor aeolus 2>/dev/null
+else
+  useradd $dev_username 2>/dev/null
+fi
