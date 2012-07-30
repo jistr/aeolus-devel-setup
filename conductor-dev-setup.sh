@@ -1,5 +1,7 @@
 #!/bin/sh
-# Run this as the aeolus user
+
+# Run this as the user you want to develop with, i.e. whatever
+# $dev_username was in conductor-dev-root-prep.sh.
 
 export here=`pwd`
 export WORKDIR="$here/w1"
