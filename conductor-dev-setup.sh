@@ -53,9 +53,9 @@ perl -p -i -e "s/database: (conductor.*\$)/database: ${this_user}_\$1/" \
 
 
 # create db schema
-$rake_prefix rake -v db:create:all
+$rake_prefix rake db:create:all
 # answer yes to command below
-echo YES | $rake_prefix rake -v dc:setup
+echo YES | $rake_prefix rake dc:setup
 
 # Precompile some needed stylesheets.
 $rake_prefix compass compile
