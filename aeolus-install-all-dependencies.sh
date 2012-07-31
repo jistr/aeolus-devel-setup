@@ -8,7 +8,7 @@
 # the dependencies may need to be manually downloaded and installed
 # (e.g., rubygem-paranoia)
 
-yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc git libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++ make
+yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc rubygems-devel git libffi libffi-devel libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++ make 
 
 # The following list created from 
 # grep Requires aeolus-conductor.spec | grep -v aeolus | grep -v 'Requires(' | grep -v '%' | perl -p -e 's/^(Build)?Requires\: (.*)$/$2/' | perl -p -e "s/^(.*)\$/\'\$1\' \\\\/" | sort
