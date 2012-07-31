@@ -3,8 +3,16 @@
 # Run this as the user you want to develop with, i.e. whatever
 # $dev_username was in conductor-dev-root-prep.sh.
 
-export here=`pwd`
-export WORKDIR="$here/w1"
+here=`pwd`
+WORKDIR="$here/w1"
+this_user=`whoami`
+using_bundler=yes
+if [ "$using_bundler" == "yes" ]; then
+  rake_prefix='bundle exec'
+else 
+  rake_prefix=''
+fi
+
 mkdir -p $WORKDIR
 cd $WORKDIR
 git clone git://github.com/aeolusproject/conductor.git
@@ -12,25 +20,45 @@ cd $WORKDIR/conductor
 git submodule init
 git submodule update
 
-# where the gems bundle pulls down will live:
-mkdir -p $WORKDIR/bundler
 
-# pull down the gem dependencies
 cd $WORKDIR/conductor/src
-export USE_BUNDLER=yes
-bundle install --path $WORKDIR/bundler
+
+if [ "$using_bundler" == "yes" ]; then
+
+  # where the gems bundle pulls down will live:
+  mkdir -p $WORKDIR/bundler
+  
+  # only Gemfile (not Gemfile.in) should exist
+  if [ -e Gemfile.in ]; then  mv -f Gemfile.in Gemfile; fi
+
+  # pull down the gem dependencies
+  bundle install --path $WORKDIR/bundler
+
+else
+
+  # only Gemfile.in (not Gemfile) should exist
+  if [ -e Gemfile ]; then  mv -f Gemfile Gemfile.in; fi
+
+fi
 
 # In this example, we use postgres.
 cp $WORKDIR/conductor/src/config/database.pg \
  $WORKDIR/conductor/src/config/database.yml
+perl -p -i -e "s/username: aeolus/username: $this_user/" \
+    $WORKDIR/conductor/src/config/database.yml
+# prefix our database names with our username so we don't clash
+# with another user (if another user is also doing development)
+perl -p -i -e "s/database: (conductor.*\$)/database: ${this_user}_\$1/" \
+    $WORKDIR/conductor/src/config/database.yml
+
 
 # create db schema
-bundle exec rake -v db:create:all
+$rake_prefix rake -v db:create:all
 # answer yes to command below
-echo YES | bundle exec rake -v dc:setup
+echo YES | $rake_prefix rake -v dc:setup
 
 # Precompile some needed stylesheets.
-bundle exec compass compile
+$rake_prefix compass compile
 
 # Start the server
-bundle exec rails s
+$rake_prefix rails s
