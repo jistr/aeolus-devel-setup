@@ -23,7 +23,7 @@ if [ "$os" == "unsupported" ]; then
 fi
 
 # install needed dependencies
-yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc git libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++
+yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc git libffi libffi-devel libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++ 
 
 # install gem and bundler if we need to
 which gem >/dev/null 2>&1
