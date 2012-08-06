@@ -70,9 +70,12 @@ su - postgres -c "psql -c \"CREATE USER $dev_username WITH PASSWORD 'v23zj59an';
 su - postgres -c "psql -c \"alter user $dev_username CREATEDB;\""
 
 if [ "$dev_username" == "aeolus" ]; then
-  # add aeolus user and group if needed
+  # add aeolus user and group if needed (need to cp -r /etc/skel to avoid
+  # selinux issue)
+  cp -r /etc/skel /usr/share/aeolus-conductor
   /usr/sbin/groupadd -g 180 -r aeolus 2>/dev/null
   /usr/sbin/useradd -u 180 -g aeolus -m -d /usr/share/aeolus-conductor aeolus 2>/dev/null
+  chown aeolus:aeolus /usr/share/aeolus-conductor 
 else
   useradd $dev_username 2>/dev/null
 fi
