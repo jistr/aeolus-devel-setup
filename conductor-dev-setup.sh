@@ -52,8 +52,12 @@ perl -p -i -e "s/database: (conductor.*\$)/database: ${this_user}_\$1/" \
     $WORKDIR/conductor/src/config/database.yml
 
 
+# keys for imagefactory
+$rake_prefix rake dc:oauth_keys
+
 # create db schema
 $rake_prefix rake db:create:all
+
 # answer yes to command below
 echo YES | $rake_prefix rake dc:setup
 
