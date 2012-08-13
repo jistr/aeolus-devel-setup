@@ -4,7 +4,7 @@
 # aeolus development.  This script should be run as root.
 
 # change this to the system user you are going to use for development
-dev_username=test
+source ../config.sh
 
 os=unsupported
 if `grep -qs 'Red Hat Enterprise Linux Server release 6' /etc/redhat-release`; then
@@ -66,10 +66,10 @@ else
   systemctl start postgresql.service
 fi
 
-su - postgres -c "psql -c \"CREATE USER $dev_username WITH PASSWORD 'v23zj59an';\""
-su - postgres -c "psql -c \"alter user $dev_username CREATEDB;\""
+su - postgres -c "psql -c \"CREATE USER $dev_user WITH PASSWORD 'v23zj59an';\""
+su - postgres -c "psql -c \"alter user $dev_user CREATEDB;\""
 
-if [ "$dev_username" == "aeolus" ]; then
+if [ "$dev_user" == "aeolus" ]; then
   # add aeolus user and group if needed (need to cp -r /etc/skel to avoid
   # selinux issue)
   cp -r /etc/skel /usr/share/aeolus-conductor
@@ -77,5 +77,5 @@ if [ "$dev_username" == "aeolus" ]; then
   /usr/sbin/useradd -u 180 -g aeolus -m -d /usr/share/aeolus-conductor aeolus 2>/dev/null
   chown aeolus:aeolus /usr/share/aeolus-conductor 
 else
-  useradd $dev_username 2>/dev/null
+  useradd $dev_user 2>/dev/null
 fi

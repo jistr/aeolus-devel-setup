@@ -8,6 +8,8 @@
 # the dependencies may need to be manually downloaded and installed
 # (e.g., rubygem-paranoia)
 
+source ../config.sh
+
 yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc rubygems-devel git libffi libffi-devel libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++ make 
 
 # The following list created from 

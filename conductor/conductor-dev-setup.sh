@@ -3,9 +3,8 @@
 # Run this as the user you want to develop with, i.e. whatever
 # $dev_username was in conductor-dev-root-prep.sh.
 
-here=`pwd`
-WORKDIR="$here/w1"
-this_user=`whoami`
+source ../config.sh
+
 using_bundler=yes
 if [ "$using_bundler" == "yes" ]; then
   rake_prefix='bundle exec'
@@ -13,26 +12,26 @@ else
   rake_prefix=''
 fi
 
-mkdir -p $WORKDIR
-cd $WORKDIR
+mkdir -p $source_install_dir
+cd $source_install_dir
 git clone git://github.com/aeolusproject/conductor.git
-cd $WORKDIR/conductor
+cd $source_install_dir/conductor
 git submodule init
 git submodule update
 
 
-cd $WORKDIR/conductor/src
+cd $source_install_dir/conductor/src
 
 if [ "$using_bundler" == "yes" ]; then
 
   # where the gems bundle pulls down will live:
-  mkdir -p $WORKDIR/bundler
+  mkdir -p $source_install_dir/bundler
   
   # only Gemfile (not Gemfile.in) should exist
   if [ -e Gemfile.in ]; then  mv -f Gemfile.in Gemfile; fi
 
   # pull down the gem dependencies
-  bundle install --path $WORKDIR/bundler
+  bundle install --path $source_install_dir/bundler
 
 else
 
@@ -42,14 +41,14 @@ else
 fi
 
 # In this example, we use postgres.
-cp $WORKDIR/conductor/src/config/database.pg \
- $WORKDIR/conductor/src/config/database.yml
-perl -p -i -e "s/username: aeolus/username: $this_user/" \
-    $WORKDIR/conductor/src/config/database.yml
+cp $source_install_dir/conductor/src/config/database.pg \
+ $source_install_dir/conductor/src/config/database.yml
+perl -p -i -e "s/username: aeolus/username: $dev_user/" \
+    $source_install_dir/conductor/src/config/database.yml
 # prefix our database names with our username so we don't clash
 # with another user (if another user is also doing development)
-perl -p -i -e "s/database: (conductor.*\$)/database: ${this_user}_\$1/" \
-    $WORKDIR/conductor/src/config/database.yml
+perl -p -i -e "s/database: (conductor.*\$)/database: ${dev_user}_\$1/" \
+    $source_install_dir/conductor/src/config/database.yml
 
 
 # keys for imagefactory
