@@ -5,13 +5,6 @@
 
 source ../config.sh
 
-using_bundler=yes
-if [ "$using_bundler" == "yes" ]; then
-  rake_prefix='bundle exec'
-else 
-  rake_prefix=''
-fi
-
 mkdir -p $source_install_dir
 cd $source_install_dir
 git clone git://github.com/aeolusproject/conductor.git
@@ -22,11 +15,11 @@ git submodule update
 
 cd $source_install_dir/conductor/src
 
-if [ "$using_bundler" == "yes" ]; then
+if [ $use_bundler ]; then
 
   # where the gems bundle pulls down will live:
   mkdir -p $source_install_dir/bundler
-  
+
   # only Gemfile (not Gemfile.in) should exist
   if [ -e Gemfile.in ]; then  mv -f Gemfile.in Gemfile; fi
 
@@ -52,16 +45,16 @@ perl -p -i -e "s/database: (conductor.*\$)/database: ${dev_user}_\$1/" \
 
 
 # keys for imagefactory
-$rake_prefix rake dc:oauth_keys
+$bundler_prefix rake dc:oauth_keys
 
 # create db schema
-$rake_prefix rake db:create:all
+$bundler_prefix rake db:create:all
 
 # answer yes to command below
-echo YES | $rake_prefix rake dc:setup
+echo YES | $bundler_prefix rake dc:setup
 
 # Precompile some needed stylesheets.
-$rake_prefix compass compile
+$bundler_prefix compass compile
 
 # Start the server
-$rake_prefix rails s
+$bundler_prefix rails s
