@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Use this script to install everything *system-wide* (as opposed to using
 # bundler) to enable development.  For example, ruby, rails, deltacloud,

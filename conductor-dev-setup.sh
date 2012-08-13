@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Run this as the user you want to develop with, i.e. whatever
 # $dev_username was in conductor-dev-root-prep.sh.

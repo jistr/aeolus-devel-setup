@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Install required libraries, prepare postgres, set up a user for
 # aeolus development.  This script should be run as root.
