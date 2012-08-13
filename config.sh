@@ -13,3 +13,6 @@ if [ $using_bundler ] ; then
 else
   export bundler_prefix=''
 fi
+
+
+export vm_hostname='f16-aeolus'
