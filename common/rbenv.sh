@@ -2,7 +2,7 @@
 
 source ../config.sh
 
-yum install -y git readline-devel ncurses-devel zlib-devel openssl-devel
+yum install -y git readline-devel ncurses-devel zlib-devel openssl-devel ruby-devel
 
 cd /usr/local
 git clone git://github.com/sstephenson/rbenv.git rbenv
