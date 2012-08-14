@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ../config.sh
+# navigate to the config file regardless of current working directory
+source "`dirname \"$0\"`/../config.sh"
 
 if ! which rbenv &> /dev/null ; then
   echo "Rbenv not found"

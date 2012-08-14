@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ../config.sh
+# navigate to the config file regardless of current working directory
+source "`dirname \"$0\"`/../config.sh"
 
 if [ "$dev_user" == "aeolus" ]; then
   # add aeolus user and group if needed (need to cp -r /etc/skel to avoid

@@ -3,7 +3,8 @@
 # Run this as the user you want to develop with, i.e. whatever
 # $dev_username was in conductor-dev-root-prep.sh.
 
-source ../config.sh
+# navigate to the config file regardless of current working directory
+source "`dirname \"$0\"`/../config.sh"
 
 mkdir -p $source_install_dir
 cd $source_install_dir

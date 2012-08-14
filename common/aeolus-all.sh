@@ -8,7 +8,8 @@
 # the dependencies may need to be manually downloaded and installed
 # (e.g., rubygem-paranoia)
 
-source ../config.sh
+# navigate to the config file regardless of current working directory
+source "`dirname \"$0\"`/../config.sh"
 
 yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc rubygems-devel git libffi libffi-devel libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++ make 
 

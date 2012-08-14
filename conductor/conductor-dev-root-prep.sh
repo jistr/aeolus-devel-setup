@@ -3,8 +3,8 @@
 # Install required libraries, prepare postgres, set up a user for
 # aeolus development.  This script should be run as root.
 
-# change this to the system user you are going to use for development
-source ../config.sh
+# navigate to the config file regardless of current working directory
+source "`dirname \"$0\"`/../config.sh"
 
 os=unsupported
 if `grep -qs 'Red Hat Enterprise Linux Server release 6' /etc/redhat-release`; then
