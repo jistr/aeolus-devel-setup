@@ -11,11 +11,10 @@ mkdir /usr/local/rbenv/plugins
 cd /usr/local/rbenv/plugins
 git clone git://github.com/sstephenson/ruby-build.git ruby-build
 
-zsh_initialization='
-
+zsh_initialization=<<'EOS'
 export RBENV_ROOT=/usr/local/rbenv
 export PATH="$RBENV_ROOT/shims:$RBENV_ROOT/bin:$PATH"
-'
+EOS
 
 bashrc='/etc/bashrc'
 if [ -f "$bashrc" ] ; then
