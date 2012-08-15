@@ -3,7 +3,7 @@
 # navigate to the config file regardless of current working directory
 source "`dirname \"$0\"`/../config.sh"
 
-yum install -y git readline-devel ncurses-devel zlib-devel openssl-devel ruby-devel
+yum install -y git readline-devel ncurses-devel zlib-devel openssl-devel libffi libffi-devel libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++
 
 cd /usr/local
 git clone git://github.com/sstephenson/rbenv.git rbenv
