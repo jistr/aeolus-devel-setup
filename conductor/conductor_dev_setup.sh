@@ -6,57 +6,65 @@
 # navigate to the config file regardless of current working directory
 source "`dirname \"$0\"`/../config.sh"
 
-git clone git://github.com/aeolusproject/conductor.git
+set -e
+
+# Mkdir and cd to prevent permission errors like "cannot cd back to /root/..."
+sudo -u $dev_user mkdir -p "$conductor_dir"
 cd "$conductor_dir"
-git submodule init
-git submodule update
 
 
+# Clone repo
+sudo -u $dev_user git clone git://github.com/aeolusproject/conductor.git "$conductor_dir"
+cd "$conductor_dir"
+sudo -u $dev_user git submodule init
+sudo -u $dev_user git submodule update
+
+
+# Bundle gems
 if [ $use_bundler ]; then
   cd "$conductor_dir/src"
 
   # where the gems bundle pulls down will live:
-  mkdir -p "$conductor_dir/src/bundle"
+  sudo -u $dev_user mkdir -p "$conductor_dir/src/bundle"
 
   # only Gemfile (not Gemfile.in) should exist
-  if [ -e Gemfile.in ]; then  mv -f Gemfile.in Gemfile; fi
+  if [ -e Gemfile.in ]; then sudo -u $dev_user  mv -f Gemfile.in Gemfile; fi
 
   # pull down the gem dependencies
-  bundle install --path "$conductor_dir/src/bundle"
+  sudo -u $dev_user bundle install --path "$conductor_dir/src/bundle"
 
 else
   cd "$conductor_dir/src"
 
   # only Gemfile.in (not Gemfile) should exist
-  if [ -e Gemfile ]; then  mv -f Gemfile Gemfile.in; fi
+  if [ -e Gemfile ]; then sudo -u $dev_user  mv -f Gemfile Gemfile.in; fi
 
 fi
 
-# In this example, we use postgres.
-cp "$conductor_dir/src/config/database.pg" \
+# Set up database connection
+sudo -u $dev_user cp "$conductor_dir/src/config/database.pg" \
  "$conductor_dir/src/config/database.yml"
 
-if [[ "$aeolus_postgres_user" != "aeolus" ]] ; then
-  perl -p -i -e "s/username: aeolus/username: $dev_user/" \
+if [[ "$conductor_postgres_user" != "aeolus" ]] ; then
+  sudo -u $dev_user perl -p -i -e "s/username: aeolus/username: $conductor_postgres_user/" \
       $conductor_dir/src/config/database.yml
   # prefix our database names with our username so we don't clash
   # with another user (if another user is also doing development)
-  perl -p -i -e "s/database: (conductor.*\$)/database: ${dev_user}_\$1/" \
+  sudo -u $dev_user perl -p -i -e "s/database: (conductor.*\$)/database: ${conductor_postgres_user}_\$1/" \
       $conductor_dir/src/config/database.yml
 fi
 
 
-# keys for imagefactory
-$bundler_prefix rake dc:oauth_keys
+cd "$conductor_dir/src"
 
-# create db schema
-$bundler_prefix rake db:create:all
+# Keys for imagefactory
+sudo -u $dev_user $bundler_prefix rake dc:oauth_keys
 
-# answer yes to command below
-echo YES | $bundler_prefix rake dc:setup
+# Create db schema
+sudo -u $dev_user $bundler_prefix rake db:create:all
 
-# Precompile some needed stylesheets.
-$bundler_prefix compass compile
+# Setup the db
+echo YES | sudo -u $dev_user $bundler_prefix rake dc:setup
 
-# Start the server
-$bundler_prefix rails s
+# Precompile some needed stylesheets
+sudo -u $dev_user $bundler_prefix compass compile

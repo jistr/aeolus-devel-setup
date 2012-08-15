@@ -47,6 +47,6 @@ else
   systemctl start postgresql.service
 fi
 
-su - postgres -c "psql -c \"CREATE USER $dev_user WITH PASSWORD 'v23zj59an';\""
-su - postgres -c "psql -c \"alter user $dev_user CREATEDB;\""
+su - postgres -c "psql -c \"CREATE USER $conductor_postgres_user WITH PASSWORD 'v23zj59an';\""
+su - postgres -c "psql -c \"alter user $conductor_postgres_user CREATEDB;\""
 
