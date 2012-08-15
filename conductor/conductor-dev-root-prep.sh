@@ -25,25 +25,6 @@ fi
 # install needed dependencies
 yum install -y postgresql-server postgresql postgresql-devel ruby ruby-devel ruby-rdoc git libffi libffi-devel libxml2 libxml2-devel libxslt libxslt-devel gcc gcc-c++ 
 
-# install gem and bundler if we need to
-which gem >/dev/null 2>&1
-if [ $? -ne 0 ]; then
-  echo "Downloading and installing gem and bundler"
-
-  mkdir -p /tmp/gem-install
-  cd /tmp/gem-install
-  wget http://production.cf.rubygems.org/rubygems/rubygems-1.8.24.tgz
-  tar -xzf rubygems-1.8.24.tgz
-  cd rubygems*
-  ruby setup.rb
-  
-fi
-which bundle >/dev/null 2>&1
-if [ $? -ne 0 ]; then
-  # install bundler
-  gem install bundler
-fi
-
 # set up postgres
 
 # hint: if previous postgres db exists, rm -rf /var/lib/pgsql/data
