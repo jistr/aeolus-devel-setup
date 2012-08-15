@@ -38,7 +38,7 @@ echo 'local all all trust' > /var/lib/pgsql/data/pg_hba.conf
 echo 'host all all 127.0.0.1/32 trust' >> /var/lib/pgsql/data/pg_hba.conf
 echo 'host all all ::1/128 trust' >> /var/lib/pgsql/data/pg_hba.conf
 
-chown postgres.postgres /var/lib/pgsql/data/pg_hba.conf
+chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
 chmod go-rw /var/lib/pgsql/data/pg_hba.conf
 
 if [ "$os" == "rhel6" ]; then
