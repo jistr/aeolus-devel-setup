@@ -13,6 +13,13 @@ fi
 
 rbenv install "$ruby_version"
 
+`rbenv which gem` install $ruby_gems
+rbenv rehash
+
+# make sure everyone can use rbenv rubies
+chmod -R a+rX /usr/local/rbenv
+
+
 # if [[ "$ruby_version" =~ 1\.8\.7 ]] ; then
 #   gcc_dir=/usr/local/gcc45
 #   echo "Installing GCC 4.5 into $gcc_dir to be able to build Ruby 1.8.7"
