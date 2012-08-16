@@ -17,7 +17,10 @@ else
   export bundler_prefix=''
 fi
 
+
+# == VIRTUAL MACHINE ==
 export vm_hostname='f16-aeolus'
+
 
 # == OAUTH ==
 export warehouse_key='warehouse_key'
@@ -29,6 +32,8 @@ export factory_secret='factory_secret'
 # == CONDUCTOR ==
 export conductor_postgres_user=aeolus
 export conductor_dir="$dev_home/conductor"
+
+
 
 # DO NOT CHANGE THE REST OF THE FILE
 
