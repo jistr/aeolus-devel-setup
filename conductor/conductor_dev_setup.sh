@@ -57,9 +57,6 @@ fi
 
 cd "$conductor_dir/src"
 
-# Keys for imagefactory
-sudo -u $dev_user $bundler_prefix rake dc:oauth_keys
-
 # Create db schema
 sudo -u $dev_user $bundler_prefix rake db:create:all
 
@@ -68,3 +65,20 @@ echo YES | sudo -u $dev_user $bundler_prefix rake dc:setup
 
 # Precompile some needed stylesheets
 sudo -u $dev_user $bundler_prefix compass compile
+
+# Setup oauth keys
+oauth_json="
+{
+  'iwhd': {
+    'consumer_key':'$warehouse_key',
+    'consumer_secret':'$warehouse_secret'
+  },
+  'factory': {
+    'consumer_key':'$factory_key',
+    'consumer_secret':'$factory_secret'
+  }
+}
+"
+
+su $dev_user -c "echo \"$oauth_json\" > \"$conductor_dir/src/config/oauth.json\""
+
