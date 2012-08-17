@@ -7,4 +7,7 @@
 # navigate to the config file regardless of current working directory
 source "`dirname \"$0\"`/../config.sh"
 
+# install libvirt (in case this script is being run before installing Aeolus)
+yum install -y libvirt
+
 chkconfig libvirtd off

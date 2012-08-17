@@ -1,5 +1,7 @@
 #!/bin/bash
 
+virtual_machine/useful.sh
+
 virtual_machine/libvirtd.sh
 
 virtual_machine/hostname.sh
